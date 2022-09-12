@@ -1,0 +1,96 @@
+<h2>Shape Creator</h2>
+<p>Count: <input id="count" type="text" value="5"></p>
+<button id="create">Create</button>
+<button id="cancel">Cancel</button>
+
+<script>
+document.getElementById('create').onclick = () => {
+  const textbox = document.getElementById('count');
+  const count = parseInt(textbox.value, 10);
+  let colorcode = parent.postMessage({ pluginMessage: { type: 'create-shapes', count } }, '*')
+  console.log("colorcode", colorcode)
+          if (colorcode) {  
+                    console.log('entry')
+                    let copied = true
+              
+                    try {
+                      if (window.copy) {
+                        window.copy(colorcode)
+                        console.log('Copied with window.copy')
+                      } else {
+                        const area = document.createElement('textarea')
+                        document.body.appendChild(area)
+                        area.value = colorcode
+                        area.focus()
+                        area.select()
+                        const result = document.execCommand('copy')
+                        document.body.removeChild(area)
+                        if (!result) {
+                          throw new Error()
+                        }
+                        console.log('Copied with document.execCommand')
+                      }
+                    } catch (e) {
+                        console.log(e)
+                      console.error(`Unable to copy the value: ${colorcode}`)
+                      copied = false
+                    }
+              
+                    if (copied) {
+                      // parent.postMessage(
+                      //   { pluginMessage: { command } },
+                      //   "*"
+                      // )
+                    }
+                  } else {
+                    console.log('not entry')
+                  }
+}
+
+document.getElementById('cancel').onclick = () => {
+  parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
+}
+
+
+      
+// onclick = event => {
+//   console.log('event')
+//                 if (colorcode) {  
+//                     console.log('entry')
+//                     let copied = true
+              
+//                     try {
+//                       if (window.copy) {
+//                         window.copy(colorcode)
+//                         console.log('Copied with window.copy')
+//                       } else {
+//                         const area = document.createElement('textarea')
+//                         document.body.appendChild(area)
+//                         area.value = colorcode
+//                         area.focus()
+//                         area.select()
+//                         const result = document.execCommand('copy')
+//                         document.body.removeChild(area)
+//                         if (!result) {
+//                           throw new Error()
+//                         }
+//                         console.log('Copied with document.execCommand')
+//                       }
+//                     } catch (e) {
+//                         console.log(e)
+//                       console.error(`Unable to copy the value: ${colorcode}`)
+//                       copied = false
+//                     }
+              
+//                     if (copied) {
+//                       // parent.postMessage(
+//                       //   { pluginMessage: { command } },
+//                       //   "*"
+//                       // )
+//                     }
+//                   } else {
+//                     console.log('not entry')
+//                   }
+//   } 
+
+</script>
